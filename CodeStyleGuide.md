@@ -108,12 +108,12 @@ The following sections provide specific coding conventions and examples for GitH
 
 ```csharp
 // Examples of good naming
-bool m_isPlayerDead;
-bool m_hasWeapon;
+bool isPlayerDead;
+bool hasWeapon;
 
 // Examples of bad naming
-bool m_dead;
-bool m_weapon;
+bool dead;
+bool weapon;
 ```
 
 ### Formatting
@@ -186,7 +186,7 @@ if (itemCount < processingThreshold)
 }
 
 [Tooltip("Maximum distance the player can travel in one frame")]
-[SerializeField] private float m_maxDeltaMovement = 10f;
+[SerializeField] private float maxDeltaMovement = 10f;
 ```
 
 ## Fields
@@ -196,7 +196,7 @@ if (itemCount < processingThreshold)
 
 ```csharp
 // Use [SerializeField] rather than exposing your field publicly; keep it private or make it a property
-[SerializeField] private int m_playerHealth;
+[SerializeField] private int playerHealth;
 ```
 
 ### Custom attributes
@@ -207,7 +207,7 @@ if (itemCount < processingThreshold)
 
 ```csharp
 [Header("Movement Settings")]
-[SerializeField, Range(0f, 20f)] private float m_moveSpeed = 5f;
+[SerializeField, Range(0f, 20f)] private float moveSpeed = 5f;
 
 [ContextMenu("Reset Position")]
 private void ResetPosition()
@@ -219,20 +219,20 @@ private void ResetPosition()
 ### Casing and Prefixes
 
 - ⚠️ Specificity reduces guesswork and prefixes help reveal intent.
-- ✅ Use prefixes for private member variables (`m_`), constants (`k_`), and static variables (`s_`), so the name reveals more about the variable at a glance.
+- ❌ Don't use prefixes for private member variables (`m_`), constants (`k_`), and static variables (`s_`).
 - ✅ Use PascalCase (e.g., `ExamplePlayerController`, `MaxHealth`, etc.) unless noted otherwise.
 - ✅ Use camelCase (e.g., `examplePlayerController`, `maxHealth`, etc.) for local/private variables and parameters.
 - ✅ Avoid snake_case, kebab-case, Hungarian notation in your C# code (you can consider kebab-case for UXML and USS when using UI Toolkit).
 
 ```csharp
-// Member variable should have an m_ prefix
-[SerializeField] private int m_playerHealth;
+// Member variable should not have a prefix
+[SerializeField] private int playerHealth;
 
-// Static variable should have an s_ prefix
-private static int s_instanceCount;
+// Static variable should not have a prefix
+private static int instanceCount;
 
-// Constant with k_ prefix
-private const float k_maxSpeed = 10f;
+// Constant should not have a prefix
+private const float maxSpeed = 10f;
 ```
 
 ### Avoid redundancy but don't leave out context
@@ -263,14 +263,14 @@ namespace MyGame.Examples
     public class ExampleMonoBehaviour : MonoBehaviour
     {
         // Fields before properties
-        [SerializeField] private float m_speed = 5f;
-        private Rigidbody m_rigidbody;
+        [SerializeField] private float speed = 5f;
+        private Rigidbody rigidbody;
 
         // Properties
         public float Speed
         {
-            get => m_speed;
-            set => m_speed = value;
+            get => speed;
+            set => speed = value;
         }
 
         // Events
@@ -280,7 +280,7 @@ namespace MyGame.Examples
         private void Awake()
         {
             // Cache component references here
-            m_rigidbody = GetComponent<Rigidbody>();
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         private void OnEnable()
@@ -291,7 +291,7 @@ namespace MyGame.Examples
         private void Start()
         {
             // Use cached references and perform operations that might depend on other components being initialized
-            m_animator.SetTrigger("Initialize");
+            animator.SetTrigger("Initialize");
         }
 
         private void OnDisable()
@@ -304,7 +304,7 @@ namespace MyGame.Examples
         {
             // Put all your regular frame logic update code in Update()
 
-            if (!m_isActive) return; // Early return pattern
+            if (!isActive) return; // Early return pattern
 
             // Move logic to well-named methods
             HandleMovement();
@@ -399,52 +399,48 @@ namespace MyGame.Characters
 
 ### Fields
 - ✅ Don't omit the private accessor field though technically its implicit. It provides context about the intent.
-- ✅ Use `m_` prefix for private variables, `k_` for constants
 - ✅ Prefix Booleans with a verb like "is" to make their meaning apparent
-- ✅ Use `m_` prefix for private fields to distinguish them from local variables.
-- ✅ Use `k_` prefix for constants to indicate immutability.
 - ✅ Use descriptive names that clearly indicate the field's purpose.
 - ❌ Avoid abbreviations unless they are widely understood (e.g., `UI`, `ID`).
-- ✅ Include units in the name if applicable (e.g., `m_speedInMetersPerSecond`).
-- ✅ Prefix Boolean fields with verbs like `is`, `has`, or `can` for clarity (e.g., `m_isActive`, `m_hasPermission`).
-- ❌ Avoid redundancy by not repeating the class name in field names (e.g., use `m_health` instead of `m_playerHealth` in a `Player` class).
+- ✅ Include units in the name if applicable (e.g., `speedInMetersPerSecond`).
+- ✅ Prefix Boolean fields with verbs like `is`, `has`, or `can` for clarity (e.g., `isActive`, `hasPermission`).
+- ❌ Avoid redundancy by not repeating the class name in field names (e.g., use `health` instead of `playerHealth` in a `Player` class).
 
 ```csharp
 // Examples
-[SerializeField] private int m_health;  // Good: Descriptive and uses prefix
-private const float k_gravity = 9.8f;   // Good: Constant with prefix
-private bool m_isVisible;               // Good: Boolean with verb prefix
-private int m_elapsedTimeInHours;       // Specify the unit used to eliminate guessing
-private int m_elapsedTimeInDays;        // Don't omit the private accessor
-private int m_elapsedTimeInSeconds;     // Don't abbreviate. Favor readability.
-[SerializeField] private bool m_isPlayerDead;   // Prefix Booleans with a verb like "is" to make their meaning apparent
-private static int s_sharedCount;          // Static variable with s_ prefix
-private const int k_maxCount = 100;      // Constant with k_ prefix
+[SerializeField] private int health;  // Good: Descriptive and SerializedField
+private const float gravity = 9.8f;   // Good: Constant
+private bool isVisible;               // Good: Boolean with verb prefix
+private int elapsedTimeInHours;       // Specify the unit used to eliminate guessing
+private int elapsedTimeInDays;        // Don't omit the private accessor
+private int elapsedTimeInSeconds;     // Don't abbreviate. Favor readability.
+[SerializeField] private bool isPlayerDead;   // Prefix Booleans with a verb like "is" to make their meaning apparent
+private static int sharedCount;          // Static variable
+private const int maxCount = 100;      // Constant
 
 ```
 
 ### Properties
 - ✅ Use PascalCase for properties and avoid prefixes/suffixes.
 - ✅ Prefer verb-like names for boolean properties (Is/Has/Can).
-- ✅ Use m_ prefix for backing fields and keep one field per line.
-- ❌ Do not serialize properties. Instead use [SerializeField] private T m_field when you need to expose it in the inspector plus a public property that returns or validates it.
-- ✅ Place properties after fields and before MonoBehaviour methods as per your class organization.
+- ✅ Keep one field per line.
+- ❌ Do not serialize properties. Instead use [SerializeField] private T field when you need to expose it in the inspector plus a public property that returns or validates it.
 - ✅ Place properties after fields and before MonoBehaviour methods as per your class organization.
 - ✅ Use properties for simple state access or modification.
 - ℹ️ Use methods for actions or operations. Such as input handling and event-driven behavior. Name appropiate `ApplyDamage(int amount)` instead of `SetHealth(int amount)`.
 
 ```csharp
 // Private backing field
-private int m_maxHealth;
+private int maxHealth;
 
 // Read-only property
-public int MaxHealthReadOnly => m_maxHealth;
+public int MaxHealthReadOnly => maxHealth;
 
 // Property with full implementation
 public int MaxHealth
 {
-    get => m_maxHealth;
-    set => m_maxHealth = value;
+    get => maxHealth;
+    set => maxHealth = value;
 }
 
 // Auto-implemented property
@@ -459,21 +455,21 @@ public string DescriptionName { get; set; } = "Fireball";
 ```csharp
     public class Player : MonoBehaviour
     {
-        private Animator m_animator;
-        [SerializeField] private AudioManagerOnOtherGameObject m_audioManager;
+        private Animator animator;
+        [SerializeField] private AudioManagerOnOtherGameObject audioManager;
 
         private void Awake()
         {
             // Cache component references here
-            m_animator = GetComponent<Animator>();
-            m_audioManager = FindObjectOfType<AudioManagerOnOtherGameObject>();
+            animator = GetComponent<Animator>();
+            audioManager = FindObjectOfType<AudioManagerOnOtherGameObject>();
         }
 
         private void Start()
         {
             // Use cached references and perform operations that might depend on other components being initialized
-            m_animator.SetTrigger("Initialize");
-            m_audioManager.PlaySound("PlayerSpawn");
+            animator.SetTrigger("Initialize");
+            audioManager.PlaySound("PlayerSpawn");
         }
     }
 
@@ -487,14 +483,14 @@ Example: Health, Speed, IsGrounded.
 ```csharp
 // Properties for simple state access
 public float Speed { get; private set; }
-public bool IsGrounded => m_isGrounded;
+public bool IsGrounded => isGrounded;
 
 // Avoid: Using a property for an action like SetMovementInput to handle input events.
 public Vector2 MovementInput
 {
     set
     {
-        m_forwardMovementInput = value;
+        forwardMovementInput = value;
         Debug.Log("Movement input set.");
     }
 }
@@ -510,25 +506,25 @@ public Vector2 MovementInput
 // Good: Use a method for actions or operations
 public void Jump()
 {
-    m_rigidbody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
+    rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 }
 
 // Good: Clear intent for setting a value
 public void SetMovementInput(Vector2 input)
 {
-    m_forwardMovementInput = input;
+    forwardMovementInput = input;
 }
 
 // Good: Clear intent for modifying a value
 public void ChangeHealth(int amount)
 {
-    m_health += amount;
+    health += amount;
 }
 
 // Avoid: Ambiguous name that could be confused with a property
 public void MovementInput(Vector2 input)
 {
-    m_forwardMovementInput = input;
+    forwardMovementInput = input;
 }
 
 ```
@@ -553,40 +549,40 @@ Use methods for behavior (e.g., Jump(), TakeDamage()).
 public class EnemyManager : MonoBehaviour
 {
    // Modern initialization syntax (C# 9.0+)
-   [SerializeField] private List<GameObject> m_activeEnemies = new();
-   [SerializeField] private Dictionary<string, List<GameObject>> m_enemyScores = new();
-   [SerializeField] private HashSet<string> m_uniqueIds = new();
+   [SerializeField] private List<GameObject> activeEnemies = new();
+   [SerializeField] private Dictionary<string, List<GameObject>> enemyScores = new();
+   [SerializeField] private HashSet<string> uniqueIds = new();
 
    // Reusable collection to avoid allocations in Update
-   private List<Enemy> m_tempNearbyEnemies = new();
-   private Vector3 m_cachedPosition;
+   private List<Enemy> tempNearbyEnemies = new();
+   private Vector3 cachedPosition;
 
    public void RegisterEnemy(GameObject enemy)
    {
-       if (!m_activeEnemies.Contains(enemy))
+       if (!activeEnemies.Contains(enemy))
        {
-           m_activeEnemies.Add(enemy);
+           activeEnemies.Add(enemy);
        }
    }
 
    public void ClearAllEnemies()
    {
        // Reuse the list to avoid GC pressure
-       m_activeEnemies.Clear();
+       activeEnemies.Clear();
    }
 
    // Good - avoid allocations in Update
    private void Update()
    {
-       if (!m_isActive) return; // Early return pattern
+       if (!isActive) return; // Early return pattern
 
        // Reuse collection instead of creating new one
-       GetNearbyEnemies(m_tempNearbyEnemies);
-       ProcessEnemies(m_tempNearbyEnemies);
-       m_tempNearbyEnemies.Clear(); // Clear for next frame
+       GetNearbyEnemies(tempNearbyEnemies);
+       ProcessEnemies(tempNearbyEnemies);
+       tempNearbyEnemies.Clear(); // Clear for next frame
 
        // Reuse Vector3 instead of creating new ones
-       m_cachedPosition.Set(newX, newY, newZ);
+       cachedPosition.Set(newX, newY, newZ);
    }
 
    // Bad example - creates garbage every frame
@@ -623,13 +619,13 @@ public class ScoreManager : MonoBehaviour
 private void Update()
 {
    // Bad - expensive operation every frame
-   var nearbyEnemies = Physics.OverlapSphere(transform.position, m_detectionRadius);
+   var nearbyEnemies = Physics.OverlapSphere(transform.position, detectionRadius);
 
    // Better - cache and update less frequently
-   if (Time.time > m_nextUpdateTime)
+   if (Time.time > nextUpdateTime)
    {
        UpdateNearbyEnemies();
-       m_nextUpdateTime = Time.time + m_updateInterval;
+       nextUpdateTime = Time.time + updateInterval;
    }
 }
 ```
@@ -735,11 +731,11 @@ public struct CustomEventArgs
 // Subscribing to events
 private void OnEnable()
 {
-    m_gameManager.DoorOpened += HandleDoorOpened;
+    gameManager.DoorOpened += HandleDoorOpened;
 }
 private void OnDisable()
 {
-    m_gameManager.DoorOpened -= HandleDoorOpened;
+    gameManager.DoorOpened -= HandleDoorOpened;
 }
 
 
@@ -787,11 +783,11 @@ public enum Direction
     West
 }
 
-private Direction m_currentDirection;
+private Direction currentDirection;
 
 private void Update()
 {
-    switch (m_currentDirection)
+    switch (currentDirection)
     {
         case Direction.North:
             // Move north
@@ -852,18 +848,18 @@ if (!conditionA) return;
 public class EnemyRegistry : MonoBehaviour
 {
     // Initialize with modern syntax using New() (C# 9.0+)
-    [SerializeField] private List<GameObject> m_enemies = new();
+    [SerializeField] private List<GameObject> enemies = new();
 
     public void Register(GameObject enemy)
     {
-        if (!m_enemies.Contains(enemy))
+        if (!enemies.Contains(enemy))
         {
-            m_enemies.Add(enemy);
+            enemies.Add(enemy);
         }
     }
     public void Unregister(GameObject enemy)
     {
-        m_enemies.Remove(enemy);
+        enemies.Remove(enemy);
     }
 }
 ```
@@ -922,15 +918,15 @@ private async void Start()
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Game Data/Weapon", order = 0)]
 public class WeaponDataSO : ScriptableObject
 {
-   [SerializeField] private string m_weaponName;
-   [SerializeField] private int m_damage;
-   [SerializeField] private float m_range;
-   [SerializeField] private GameObject m_projectilePrefab;
+   [SerializeField] private string weaponName;
+   [SerializeField] private int damage;
+   [SerializeField] private float range;
+   [SerializeField] private GameObject projectilePrefab;
 
-   public string WeaponName => m_weaponName;
-   public int Damage => m_damage;
-   public float Range => m_range;
-   public GameObject ProjectilePrefab => m_projectilePrefab;
+   public string WeaponName => weaponName;
+   public int Damage => damage;
+   public float Range => range;
+   public GameObject ProjectilePrefab => projectilePrefab;
 }
 ```
 
@@ -965,23 +961,23 @@ public static class InputActions
 }
 
 // Good - constants prevent typos and enable refactoring
-private const string k_isRunningParam = "IsRunning";
-private const string k_speedParam = "Speed";
-private const string k_jumpTriggerParam = "JumpTrigger";
-private const string k_isGroundedParam = "IsGrounded";
-private const string k_attackIndexParam = "AttackIndex";
-private const string k_isDeadParam = "IsDead";
+private const string isRunningParam = "IsRunning";
+private const string speedParam = "Speed";
+private const string jumpTriggerParam = "JumpTrigger";
+private const string isGroundedParam = "IsGrounded";
+private const string attackIndexParam = "AttackIndex";
+private const string isDeadParam = "IsDead";
 
 // Usage - safe and maintainable
-m_animator.SetBool(k_isRunningParam, isMoving);
-m_animator.SetFloat(k_speedParam, currentSpeed);
-m_animator.SetTrigger(k_jumpTriggerParam);
+animator.SetBool(isRunningParam, isMoving);
+animator.SetFloat(speedParam, currentSpeed);
+animator.SetTrigger(jumpTriggerParam);
 
 // Bad - magic strings scattered throughout code (runtime errors possible)
 void UpdateMovement()
 {
-   m_animator.SetBool("IsWalking", isMoving);        // Typo risk
-   m_animator.SetFloat("Spead", currentSpeed);       // Typo - fails silently!
+   animator.SetBool("IsWalking", isMoving);        // Typo risk
+   animator.SetFloat("Spead", currentSpeed);       // Typo - fails silently!
 
    if (m_animator.GetBool("IsWalknig"))              // Another typo
    {
@@ -990,16 +986,16 @@ void UpdateMovement()
 }
 
 // Good - centralized, safe, maintainable
-private const string k_isWalkingParam = "IsWalking";
-private const string k_speedParam = "Speed";
+private const string isWalkingParam = "IsWalking";
+private const string speedParam = "Speed";
 
 
 void UpdateMovement()
 {
-   m_animator.SetBool(k_isWalkingParam, isMoving);
-   m_animator.SetFloat(k_speedParam, currentSpeed);
+   animator.SetBool(isWalkingParam, isMoving);
+   animator.SetFloat(speedParam, currentSpeed);
 
-   if (m_animator.GetBool(k_isWalkingParam))
+   if (animator.GetBool(isWalkingParam))
    {
        // Safe - IDE will catch typos at compile time
    }
@@ -1055,7 +1051,7 @@ if (m_audioSource != null)
 [RequireComponent(typeof(AudioSource))]
 public class AudioPlayer : MonoBehaviour
 {
-    private AudioSource m_audioSource;
+    private AudioSource audioSource;
 }
 
 ```
@@ -1074,7 +1070,7 @@ public void SaveGame(GameData data)
     try
     {
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(k_saveFilePath, json);
+        File.WriteAllText(saveFilePath, json);
     }
     catch (IOException ioEx)
     {
@@ -1127,11 +1123,11 @@ public enum MovementState
     Jumping
 }
 
-private MovementState m_currentState;
+private MovementState currentState;
 
 private void Update()
 {
-    switch (m_currentState)
+    switch (currentState)
     {
         case MovementState.Idle:
             // Handle idle logic
@@ -1157,46 +1153,46 @@ private void Update()
 // Example of State Pattern for a character controller
 public class PlayerController : MonoBehaviour
 {
-    private PlayerState m_currentState;
+    private PlayerState currentState;
 
     // State references
-    private IdleState m_idleState;
-    private RunningState m_runningState;
-    private JumpingState m_jumpingState;
+    private IdleState idleState;
+    private RunningState runningState;
+    private JumpingState jumpingState;
 
     private void Awake()
     {
         // Initialize states
-        m_idleState = new IdleState(this);
-        m_runningState = new RunningState(this);
-        m_jumpingState = new JumpingState(this);
+        idleState = new IdleState(this);
+        runningState = new RunningState(this);
+        jumpingState = new JumpingState(this);
 
         // Set default state
-        m_currentState = m_idleState;
+        currentState = idleState;
     }
 
     private void Update()
     {
         // Let the current state handle the update
-        m_currentState.Update();
+        currentState.Update();
     }
 
     public void ChangeState(PlayerState newState)
     {
-        m_currentState.Exit();
-        m_currentState = newState;
-        m_currentState.Enter();
+        currentState.Exit();
+        currentState = newState;
+        currentState.Enter();
     }
 }
 
 // Base state class
 public abstract class PlayerState
 {
-    protected PlayerController m_controller;
+    protected PlayerController controller;
 
     public PlayerState(PlayerController controller)
     {
-        m_controller = controller;
+        this.controller = controller;
     }
 
     public abstract void Enter();
@@ -1222,13 +1218,13 @@ using UnityEngine.Pool;
 
 public class BulletPool : MonoBehaviour
 {
-    [SerializeField] private Bullet m_bulletPrefab;
-    private ObjectPool<Bullet> m_pool;
+    [SerializeField] private Bullet bulletPrefab;
+    private ObjectPool<Bullet> pool;
 
     private void Awake()
     {
-        m_pool = new ObjectPool<Bullet>(
-            createFunc: () => Instantiate(m_bulletPrefab),
+        pool = new ObjectPool<Bullet>(
+            createFunc: () => Instantiate(bulletPrefab),
             actionOnGet: bullet => bullet.gameObject.SetActive(true),
             actionOnRelease: bullet => bullet.gameObject.SetActive(false),
             actionOnDestroy: bullet => Destroy(bullet.gameObject),
@@ -1240,12 +1236,12 @@ public class BulletPool : MonoBehaviour
 
     public Bullet GetFromPool()
     {
-        return m_pool.Get();
+        return pool.Get();
     }
 
     public void ReturnToPool(Bullet bullet)
     {
-        m_pool.Release(bullet);
+        pool.Release(bullet);
     }
 }
 ```
@@ -1389,15 +1385,15 @@ btn.classList.Add("button--small");
 // Proper UI Toolkit event registration
 private void OnEnable()
 {
-   m_button.clicked += OnButtonClicked;
-   m_dropdown.RegisterValueChangedCallback(OnDropdownChanged);
+   button.clicked += OnButtonClicked;
+   dropdown.RegisterValueChangedCallback(OnDropdownChanged);
 }
 
 
 private void OnDisable()
 {
-   m_button.clicked -= OnButtonClicked;
-   m_dropdown.UnregisterValueChangedCallback(OnDropdownChanged);
+   button.clicked -= OnButtonClicked;
+   dropdown.UnregisterValueChangedCallback(OnDropdownChanged);
 }
 ```
 ## Using .editorconfig to Enforce Formatting Rules ##
@@ -1495,17 +1491,17 @@ namespace CoreSystems
     {
         [Header("Movement Settings")]
         [SerializeField, Tooltip("Movement speed of the character.")]
-        private float m_moveSpeed = 5f;
+        private float moveSpeed = 5f;
 
         [Header("Jump Settings")]
         [SerializeField, Tooltip("Force applied when the character jumps.")]
-        private float m_jumpForce = 7f;
+        private float jumpForce = 7f;
 
         [Header("Ground Detection")]
         [SerializeField, Tooltip("Layer mask used to determine which surfaces count as ground.")]
-        private LayerMask m_groundLayer;
+        private LayerMask groundLayer;
 
-        private Rigidbody m_rigidbody;
+        private Rigidbody rigidbody;
 
         // Event to notify animation changes
         public event System.Action<Vector3> MovementInputReceived;
@@ -1513,7 +1509,7 @@ namespace CoreSystems
         private void Awake()
         {
             // Cache the Rigidbody component
-            m_rigidbody = GetComponent<Rigidbody>();
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Update()
@@ -1539,7 +1535,7 @@ namespace CoreSystems
             if (movement == Vector3.zero) return;
 
             // Move the character
-            transform.Translate(movement * m_moveSpeed * Time.deltaTime, Space.World);
+            transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
 
             // Notify listeners about movement input
             OnMovementInputReceived(movement);
@@ -1554,7 +1550,7 @@ namespace CoreSystems
         {
             if (Input.GetButtonDown("Jump") && IsGrounded())
             {
-                m_rigidbody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
+                rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
 
@@ -1564,7 +1560,7 @@ namespace CoreSystems
             Debug.DrawRay(transform.position, Vector3.down * 1.1f, Color.red);
 
             // Simple ground check
-            return Physics.Raycast(transform.position, Vector3.down, 1.1f, m_groundLayer);
+            return Physics.Raycast(transform.position, Vector3.down, 1.1f, groundLayer);
         }
     }
 }
@@ -1581,37 +1577,37 @@ namespace CoreSystems
     {
         [Header("Animation Parameters")]
         [SerializeField, Tooltip("Animator parameter for movement speed.")]
-        private string m_speedParam = "Speed";  // Use constant from centralized class
+        private string speedParam = "Speed";  // Use constant from centralized class
 
         [SerializeField, Tooltip("Layer mask for ground detection.")]
-        private LayerMask m_groundLayer;
+        private LayerMask groundLayer;
 
-        private CharacterController m_characterController;
+        private CharacterController characterController;
 
-        private Animator m_animator;
+        private Animator animator;
 
         private void Awake()
         {
             // Cache the Animator component
-            m_animator = GetComponent<Animator>();
-            m_characterController = GetComponentInParent<CharacterController>();
+            animator = GetComponent<Animator>();
+            characterController = GetComponentInParent<CharacterController>();
         }
 
         private void OnEnable()
         {
-            m_characterController.MovementInputReceived += HandleMovementInput;
+            characterController.MovementInputReceived += HandleMovementInput;
         }
 
         private void OnDisable()
         {
-            m_characterController.MovementInputReceived -= HandleMovementInput;
+            characterController.MovementInputReceived -= HandleMovementInput;
         }
 
         private void HandleMovementInput(Vector3 movement)
         {
             // Update the animator's speed parameter based on movement magnitude
             float speed = movement.magnitude;
-            m_animator.SetFloat(m_speedParam, speed);
+            animator.SetFloat(speedParam, speed);
         }
     }
 }
@@ -1631,16 +1627,16 @@ namespace CoreSystems
     // Calculate the current movement speed based on input
 
     // Less clear version ternary operator
-    m_currentMovementSpeed = m_forwardMovementInput.y * (m_isRunning ? m_runningSpeed : m_walkSpeed);
+    currentMovementSpeed = forwardMovementInput.y * (isRunning ? runningSpeed : walkSpeed);
 
     // Clearer version with if-else
     if (m_isRunning)
     {
-        m_currentMovementSpeed = m_forwardMovementInput.y * m_runningSpeed;
+        currentMovementSpeed = forwardMovementInput.y * runningSpeed;
     }
     else
     {
-        m_currentMovementSpeed = m_forwardMovementInput.y * m_walkSpeed;
+        currentMovementSpeed = forwardMovementInput.y * walkSpeed;
     }
 ```
 
