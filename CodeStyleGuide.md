@@ -979,7 +979,7 @@ void UpdateMovement()
    animator.SetBool("IsWalking", isMoving);        // Typo risk
    animator.SetFloat("Spead", currentSpeed);       // Typo - fails silently!
 
-   if (m_animator.GetBool("IsWalknig"))              // Another typo
+   if (animator.GetBool("IsWalknig"))              // Another typo
    {
        // This condition will never be true due to typo
    }
@@ -1042,7 +1042,7 @@ Debug.Log("This log only appears in the Editor.");
 #endif
 
 // Null checks can be useful but avoid excessive checks. It can clutter the code.
-if (m_audioSource != null)
+if (audioSource != null)
 {
    Debug.Log("Audio source is available.", this);
 }
@@ -1630,7 +1630,7 @@ namespace CoreSystems
     currentMovementSpeed = forwardMovementInput.y * (isRunning ? runningSpeed : walkSpeed);
 
     // Clearer version with if-else
-    if (m_isRunning)
+    if (isRunning)
     {
         currentMovementSpeed = forwardMovementInput.y * runningSpeed;
     }
